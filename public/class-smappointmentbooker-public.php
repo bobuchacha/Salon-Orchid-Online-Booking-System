@@ -1,15 +1,4 @@
 <?php
-
-/**
- * The public-facing functionality of the plugin.
- *
- * @link       http://salonmanager.us
- * @since      1.0.0
- *
- * @package    Smappointmentbooker
- * @subpackage Smappointmentbooker/public
- */
-
 /**
  * The public-facing functionality of the plugin.
  *
@@ -105,8 +94,11 @@ class Smappointmentbooker_Public {
                 wp_enqueue_script('jquery3');
                 wp_enqueue_script( 'underscore1', '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.min.js', null, $this->version, false );
                 wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/smappointmentbooker-public.js', array( 'jquery' ), $this->version, false );
-                wp_enqueue_script( 'datepicker', plugin_dir_url( __FILE__ ) . 'js/datepicker.js', array( 'jquery' ), "1.0.9", false );
                 wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/smappointmentbooker-public.css', array(), $this->version, 'all' );
+                wp_enqueue_script( 'datepicker', plugin_dir_url( __FILE__ ) . 'js/datepicker.js', array( 'jquery' ), "1.0.9", false );
+                wp_enqueue_style( 'datepicker', plugin_dir_url( __FILE__ ) . 'css/datepicker.css', array(), $this->version, 'all' );
+
+
             }
 
 		}

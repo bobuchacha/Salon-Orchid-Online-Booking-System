@@ -207,6 +207,29 @@ $Router->post("/submit-appointment", function() use ($Router, $API){
 
 });
 
+/**
+ * get first avaiability
+ */
+$Router->get('/st-get-technician-first-available', function () use ($Router, $API){
+    $data = (request_api_data('/st-get-technician-first-available', 'GET', [
+        'technician-id' => $Router->request_get("technician-id"),
+        'service-duration' => $Router->request_get("service-duration")
+    ]));
+
+    if ($data) {
+
+        $Router->response($data);
+
+    }
+    else {
+
+        $Router->response([
+            "error" => true,
+            "message" => "API Server Error"
+        ]);
+
+    }
+});
 
 
 /**

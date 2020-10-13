@@ -1,4 +1,11 @@
-(function($) {
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
+		typeof define === 'function' && define.amd ? define(['jquery'], factory) :
+			(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.jQuery));
+}(this, (function ($) { 'use strict';
+
+	$ = $ && $.hasOwnProperty('default') ? $['default'] : $;
+
 	window.modalStack = [];
 	window.popup = function (modal, removeOnClose, animated) {
 		if (typeof removeOnClose === 'undefined') removeOnClose = true;
@@ -280,6 +287,7 @@
 			'service-duration': 0,
 			'service-addon-duration': 0
 		};
+		let _firstAvaiDate, _firstAvaiTime;
 		var _$AppointmentInformationContainer;
 		var _Services;
 		
@@ -324,6 +332,7 @@
 			_$Container.on(UI_CLICK_FUNCTION, '.time-item', _on_time_item_clicked);
 			$(document).on(UI_CLICK_FUNCTION, '.show-booking-policy', _show_booking_policy);
 			$(document).on(UI_CLICK_FUNCTION, '.close-popup', _close_popup);
+			$(document).on(UI_CLICK_FUNCTION, '.first-availability, .select-first-availability', _select_first_availability);
 		}
 		
 		/**
@@ -469,8 +478,33 @@
 
 			_setAppointmentInformation('technician-id', id);
 			_setAppointmentInformation('technician-name', name);
-			_requestCalendar();
 
+			// now request information about technician first available
+			_requestServerData({
+				URI: '/st-get-technician-first-available',
+				method: 'GET',
+				data: {
+					'service-duration': _AppointmentInformation['service-duration'] + _AppointmentInformation['service-addon-duration'],
+					'technician-id': _AppointmentInformation['technician-id']
+				},
+				onSuccess: function (response) {
+					let avails = response.data;
+					let date = response.date;
+					_requestCalendar();
+
+					if (avails.length) {
+						_firstAvaiDate = date;
+						_firstAvaiTime = avails[0];
+						$(".first-availability").html(avails[0] + " on " + date);
+					}
+				}
+			})
+		}
+
+		function _select_first_availability(){
+			_setAppointmentInformation('service-time', _firstAvaiTime + ":00");
+			_setAppointmentInformation('service-date', _firstAvaiDate);
+			_showCustomerTab();
 		}
 
 		/**
@@ -502,7 +536,7 @@
 			// find service metadata in cache
 			var service = _.find(_Services, function(s){return s.id==id});
 
-			if (service && service.service_is_addon=='0') {
+			if (service && service.service_is_addon == '0') {
 				_setAppointmentInformation('service-name', name);
 				_setAppointmentInformation('service-name-display', display_name);
 				_setAppointmentInformation('service-duration', parseInt(duration));
@@ -521,7 +555,6 @@
 				_setAppointmentInformation('service-addon-display', display_name);
 				_setAppointmentInformation('service-addon-duration', parseInt(duration));
 				_requestTechniciansList();
-
 			}
 			return ;
 
@@ -548,7 +581,7 @@
 
 			if (!(r.available
 			      && r.available.length > 0)) {
-				$(".time-container").html("There is no available time for this Technician");
+				$(".time-container").html(`I'm sorry, ${_AppointmentInformation['technician-name']} is not available on the selected date.`);
 				return;
 			}
 
@@ -600,13 +633,12 @@
 			$("#txtDate").datepicker({
 				autoHide: true,
 				autoPick: true,
-				//inline: true,
-				//container: '.calendar-container',
+				inline: true,
+				container: '.calendar-container',
 				format: 'mm/dd/yyyy',
 				startDate: _.now(),
 				pick: _on_calendar_picked
 			});
-
 			showTab("#sm-tab-calendar");
 		}
 
@@ -756,4 +788,4 @@
 			}   // __proceedRequest
 		} // _requestServerData
 	};
-})($);
+})));

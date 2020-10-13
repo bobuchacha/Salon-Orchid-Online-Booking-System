@@ -51,6 +51,7 @@ global $post;;
 		"auth-token": "<?php echo $API_token; ?>"
 	};
 </script>
+
 <script type="text/template" id="template-select-service">
 	<div class="content-block-inner">
 
@@ -107,14 +108,18 @@ global $post;;
 		<div class="row">
 			<div class="col-md-auto">
 				<label>Select Date:</label>
-				<input data-toggle="datepicker" id="txtDate" type="text" />
-				<div class="calendar-container" style="width:210px;height:240px;display:none"></div>
+				<input data-toggle="datepicker" id="txtDate" type="text" style="display:none" />
+				<div class="calendar-container" style=""></div>
 			</div>
 		</div>
 		<hr>
-		<div class="row">
+
+        <div class="row">
 			<div class="col-md-auto">
-				<label>Available Time:</label>
+                <p>Earliest Availability: <b><a href="#" class="first-availability"></a></b></p>
+                <button class="select-first-availability">Book me this time</button> or
+                <p>&nbsp;</p>
+                <p><b>Select a time bellow:</b></p>
 				<div class="time-container"></div>
 			</div>
 		</div>
