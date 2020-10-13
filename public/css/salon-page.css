@@ -1,0 +1,45 @@
+/*-------------------------- MAKE MENU STYLES ------------------------------ */
+.menu {
+    width:100%;
+    list-style:none;
+}
+
+.menu li.title {
+    font-size:1.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #d09241;
+}
+
+.menu li{
+    border-bottom: 1px dotted #fac977;
+    margin-bottom: 12px;
+    font-weight:400;
+}
+
+/* price */
+.menu li > b:first-child, .menu li > strong:first-child{
+    float:right;
+    display: inline-block;
+    height:100%;
+    text-align:right;
+    width:50px;
+    font-weight:400;
+}
+/* description */
+.menu li > em, .menu li > i{
+    display:block;
+    font-size:.8em;
+    color:#d8b04f;
+    font-weight:normal;
+}
+
+/* SUB TITLE */
+.site-description .address:before{
+    height:inherit;
+    display:block;
+    content:'';
+    width:25px;
+    background:black;
+}
+
