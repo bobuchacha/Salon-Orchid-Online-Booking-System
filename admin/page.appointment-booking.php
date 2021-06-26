@@ -4,26 +4,16 @@ $jsFolder =  plugin_dir_url(__DIR__ . '../') . 'public/js';
 
 ?>
 <!DOCTYPE html>
-<html <?php language_attributes(); ?> class="no-js no-svg">
+<html <?php language_attributes(); ?>>
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!--
-    <link rel="stylesheet" href="<?php echo ($cssFolder);?>/salon-page.css" type="text/css" />
-    <link rel="stylesheet" href="<?php echo ($cssFolder);?>/smappointmentbooker-public.css" type="text/css" />
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
--->
     <?php wp_head(); ?>
-<!--
-    <script type="text/javascript" src="<?php echo $jsFolder;?>/_.js"></script>
-    <script type="text/javascript" src="<?php echo $jsFolder;?>/datepicker.js"></script>
-    <script type="text/javascript" src="<?php echo $jsFolder;?>/smappointmentbooker-public.js"></script>
-    -->
 
 </head>
 
-<body <?php //body_class(); ?>>
+<body <?php body_class(); ?>>
 
 <div id="page" class="site">
 	<div class="site-content-contain">
