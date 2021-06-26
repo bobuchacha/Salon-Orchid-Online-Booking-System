@@ -57,7 +57,7 @@ $jsFolder =  plugin_dir_url(__DIR__ . '../') . 'public/js';
 									</div>
 								</div>
 							</header><!-- .entry-header -->
-                            <hr>
+
 							<div class="entry-content">
 								<?php
 								the_content();
