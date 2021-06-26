@@ -61,7 +61,7 @@ global $post;;
 		<p>For better scheduling, please select an addon service if you need any. Additional service may require additional
 		appointment.</p>
 		<%}%>
-		<ul style="margin-left:2em; line-height:1.8em">
+		<ul style="line-height:1.8em">
 			<%
 			_.each(Services, function(s){
 				if ((!isAddon && s.service_is_addon=='1') || (isAddon && s.service_is_addon=='0')) return;
@@ -85,7 +85,7 @@ global $post;;
 	<div class="content-block-inner">
 		<h2>Select a Technician</h2>
 		<p>Please select a Technician who will perform your service.</p>
-		<ul style="margin-left:2em; line-height:1.8em;">
+		<ul style="line-height:1.8em;padding-left:0px">
 			<%
 			if (Technicians.length==0) print("No Technician available for this service");
 			_.each(Technicians, function(t){
@@ -105,7 +105,6 @@ global $post;;
 		<p>Select a date, then pick your arrival time.</p>
 		<div class="row">
 			<div class="col-md-auto">
-				<label>Select Date:</label>
 				<input data-toggle="datepicker" id="txtDate" type="text" style="display:none" />
 				<div class="calendar-container" style=""></div>
 			</div>
@@ -168,26 +167,26 @@ global $post;;
 		<hr>
 		<div class="row" style="margin-top:1em">
 			<div class="col-xl-6">
-				<label>Phone Number:</label>
-				<input id="txtPhone" type="number" />
+				<label for="txtPhone">Phone Number:</label><br/>
+				<input id="txtPhone" type="number"  style="width:100%"/>
 			</div>
 		</div>
 		<div class="row" style="margin-top:1em">
 			<div class="col-xl-6">
-				<label>Name:</label>
-				<input id="txtName" type="text" />
+				<label for="txtName">Name:</label><br/>
+				<input id="txtName" type="text" style="width:100%"/>
 			</div>
 		</div>
 		<div class="row" style="margin-top:1em">
 			<div class="col-xl-6">
-				<label>Special Request:</label>
-				<textarea id="txtNote"></textarea>
+				<label for="txtNote">Special Request:</label><br>
+				<textarea id="txtNote" style="width:100%"></textarea>
 			</div>
 		</div>
 		<div class="row"  style="margin-top:1em">
 			<div class="col-md-auto">
 				By booking with us, you must read and agree with our <a href="#" class="show-booking-policy">Online Booking Terms &amp; Conditions</a>.<br><br>
-				<label style="font-weight:normal"><input type="checkbox" id="chkReceiveSMSNotification" checked="checked"/> Please text me SMS Reminder & Notification</label>
+				<label style="font-weight:normal"><input type="checkbox" id="chkReceiveSMSNotification" checked="checked"/> Please text me SMS Reminder & Notification</label><br/>
 				<label style="font-weight:normal"><input type="checkbox" id="chkReceiveSMSPromotion" checked="checked"/> Please text me any future promotional programs</label>
 			</div>
 		</div>

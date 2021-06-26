@@ -407,6 +407,7 @@
 				default:
 			}
 
+			Me.showIndicator();
 			_requestServerData({
 				URI: '/submit-appointment',
 				method: 'POST',
@@ -421,10 +422,12 @@
 					}else {
 						$this.prop('disabled', false);
 					}
+					Me.hideIndicator();
 				},
 				onError : ()=>{
 					alert('We\'re sorry, an error has occurred during your process. Please try again.');
 					$this.prop('disabled', false);
+					Me.hideIndicator();
 				}
 			})
 		}
