@@ -51,8 +51,8 @@ $location_id = $AccessTokenData->{'location-id'};
 $api_token = $AccessTokenData->{'api-token'};
 $API_Headers = ['Access-Token'=>$api_token, 'Account-ID'=>$account_id, 'Location-ID'=>$location_id];
 //$API_URL = 'http://localhost:8000';
-$API_URL = 'http://api5.salonmanager.us';
-//$API_URL = 'http://api.salonmanager.us/v4';
+//$API_URL = 'http://api5.salonmanager.us';
+$API_URL = 'http://api.salonmanager.us/v4';
 
 // check for authentication before processing anything else
 //authenticate();
