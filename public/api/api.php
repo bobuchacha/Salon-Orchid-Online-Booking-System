@@ -76,7 +76,8 @@ $Router->get("/salon-metadata", function() use ($Router, $API){
 
 		$Router->response([
 			"error" => true,
-		    "message" => "API Server Error"
+		    "message" => "API Server Error",
+            "returned" => $data
 		]);
 
 	}
