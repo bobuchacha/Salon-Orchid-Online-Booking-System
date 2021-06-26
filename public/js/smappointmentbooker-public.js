@@ -6,6 +6,7 @@
 
 	$ = $ && $.hasOwnProperty('default') ? $['default'] : $;
 
+	// *************** UI HELPERS **********************/
 	window.modalStack = [];
 	window.popup = function (modal, removeOnClose, animated) {
 		if (typeof removeOnClose === 'undefined') removeOnClose = true;
@@ -226,7 +227,6 @@
 		}
 		return true;
 	};
-	
 	window.showTab = function (tab, tabLink, animated, force) {
 		var newTab = $(tab);
 
@@ -276,25 +276,26 @@
 	      UI_CLICK_FUNCTION = 'click',
 		  TEMPLATE_NOT_FOUND = 'Template not found';
 
-	// *************** APPOINTMENT BOKING FORM **********/
+	// *************** APPOINTMENT BOOKING FORM **********/
 	window.AppointmentBookForm = function(container){
-		var Me = this,
+		let Me = this,
 		    _xhrs = [],
 		    _xhrQueue = [];
 
-		var _$Container = $(container);
-		var _AppointmentInformation = {
+		let _$Container = $(container);
+		let _AppointmentInformation = {
 			'service-duration': 0,
 			'service-addon-duration': 0
 		};
 		let _firstAvaiDate, _firstAvaiTime;
-		var _$AppointmentInformationContainer;
-		var _Services;
-		
-		if (!_$Container) return;
-		
-		Me.$container = _$Container;
+		let _$AppointmentInformationContainer;
+		let _Services;
 
+		// no container defined or not found in DOM, exit
+		if (!_$Container) return;
+
+		// save container and load templates to class member
+		Me.$container = _$Container;
 		Me.templates = {
 			'select-service': _.template($("#template-select-service").html() || TEMPLATE_NOT_FOUND),
 			'calendar': _.template($("#template-calendar").html() || TEMPLATE_NOT_FOUND),
@@ -303,24 +304,49 @@
 			'booking-policy': _.template($("#template-booking-policy-popup").html() || TEMPLATE_NOT_FOUND),
 			'technician-list': _.template($("#template-technician-list").html() || TEMPLATE_NOT_FOUND)
 		};
-		
+
+		/**
+		 * fetch get-services and render appointments
+		 *
+		 * @entry_point
+		 */
 		Me.render = function(){
 			_$AppointmentInformationContainer = $(".appointment-information");
-			_requestServerData({
-				URI: '/get-services',
-				onSuccess: function(r){
-					_Services = r.data;
-					_showServiceList(_Services);
+			if (!Me.salon_metadata) {
 
-				}, onError: function(){
-					$("#sm-tab-service").html("<h2>Server Error</h2><p>We encounter a server error. Please reload this page or try again later.</p>");
-				}
-			});
+				Me.showIndicator();
+				_requestServerData({
+					URI: '/salon-metadata',
+					onSuccess: function(r){
+						Me.hideIndicator();
+						_Services = r.services;
+						Me.salon_metadata = r;
+						_showServiceList(Me.salon_metadata.services);
+					}, onError: function(){
+						Me.hideIndicator();
+						$("#sm-tab-service").html("<h2>Server Error</h2><p>We encounter a server error. Please reload this page or try again later.</p>");
+					}
+				});
+
+				return;
+			}
+
+			_showServiceList(Me.salon_metadata.services);
+
 		};
 
 		window.showBookingPolicy = _show_booking_policy;
 		window.requestServerData = _requestServerData;
-		
+
+
+		Me.showIndicator = () => {
+			if (Me.$container.find("._indicator").length) return;
+			Me.$container.append("<div class='_indicator'><div class='spinner'></div></div>");
+		}
+		Me.hideIndicator = () => {
+			Me.$container.find("._indicator").remove();
+		}
+		// global event handler for UI
 		_initGlobalEventHandlers();
 		
 		return;
@@ -480,6 +506,7 @@
 			_setAppointmentInformation('technician-name', name);
 
 			// now request information about technician first available
+			Me.showIndicator();
 			_requestServerData({
 				URI: '/st-get-technician-first-available',
 				method: 'GET',
@@ -490,15 +517,26 @@
 				onSuccess: function (response) {
 					let avails = response.data;
 					let date = response.date;
+					Me.hideIndicator();
 					_requestCalendar();
 
 					if (avails.length) {
 						_firstAvaiDate = date;
 						_firstAvaiTime = avails[0];
-						$(".first-availability").html(avails[0] + " on " + date);
+						$(".first-availability").html(avails[0] + " on " + _format_date(date));
+
 					}
+				},
+				onError: () => {
+					Me.hideIndicator();
+					window.alert("We're sorry. But there is an error occurred during request. Please try again.");
 				}
 			})
+		}
+
+		function _format_date(raw){
+			let date = new Date(raw + " 00:00:00");
+			return date.toDateString();
 		}
 
 		function _select_first_availability(){
@@ -509,6 +547,7 @@
 
 		/**
 		 * triggered when client click on any service-item link in step 1 and 2 of the form
+		 * this will bring user to step 2, select technician
 		 * @private
 		 */
 		function _on_service_item_clicked(){
@@ -647,18 +686,33 @@
 		 * @private
 		 */
 		function _requestTechniciansList(){
-			_requestServerData({
-				URI: '/get-technicians',
-				data: {
-					'service-id': _AppointmentInformation['service-id']
-				},
-				onSuccess: function(r){
-					_showTechnicianList(r.data);
-				},
-				onError: function(r){
+			if (!Me.salon_metadata || !Me.salon_metadata.technicians) {
+				// fall back to make request to server directly in case there is something wrong in the memory
 
-				}
-			});
+				Me.showIndicator();
+				_requestServerData({
+					URI: '/get-technicians',
+					data: {
+						'service-id': _AppointmentInformation['service-id']
+					},
+					onSuccess: function(r){
+						Me.hideIndicator();
+						_showTechnicianList(r.data);
+					},
+					onError: function(r){
+						Me.hideIndicator();
+						window.alert("We're sorry. But there is an error occurred during request. Please try again.");
+					}
+				});
+			}else {
+				// find the technician that has service-id in technician_services property
+				let technicians = [];
+				technicians = _.filter(Me.salon_metadata.technicians, tech => {
+					return typeof(tech.technician_services) === 'string' && tech.technician_services.split(",").indexOf(String(_AppointmentInformation['service-id'])) > -1;
+				});
+				_showTechnicianList(technicians);
+			}
+
 		}
 
 		/**

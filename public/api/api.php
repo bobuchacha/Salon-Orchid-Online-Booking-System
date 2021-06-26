@@ -50,11 +50,34 @@ $account_id = $AccessTokenData->{'account-id'};
 $location_id = $AccessTokenData->{'location-id'};
 $api_token = $AccessTokenData->{'api-token'};
 $API_Headers = ['Access-Token'=>$api_token, 'Account-ID'=>$account_id, 'Location-ID'=>$location_id];
-$API_URL = 'http://api.salonmanager.us/v4';
-
+$API_URL = 'http://localhost:8000';
+//$API_URL = 'http://api5.salonmanager.us';
+//$API_URL = 'http://api.salonmanager.us/v4';
 
 // check for authentication before processing anything else
 //authenticate();
+
+/**
+ *  fetch services from main API server and return to wordpress
+ */
+$Router->get("/salon-metadata", function() use ($Router, $API){
+	$data = (request_api_data('/salontime-salon-metadata', 'GET'));
+
+	if ($data) {
+
+		$Router->response($data);
+
+	}
+	else {
+
+		$Router->response([
+			"error" => true,
+		    "message" => "API Server Error"
+		]);
+
+	}
+
+});
 
 /**
  *  fetch services from main API server and return to wordpress

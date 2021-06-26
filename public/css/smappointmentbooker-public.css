@@ -2,6 +2,31 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+._indicator {
+    top:0px;
+    left:0px;
+    position:absolute;
+    z-index:99999999;
+    background:rgba(0,0,0,.35);
+    width:100%;
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+._indicator>.spinner {
+    border: 5px solid rgba(243, 243, 243, 0.70);
+    border-top: 5px solid rgba(52, 152, 219, 0.70);
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
 .address {
     font-size:.8rem;
@@ -130,6 +155,7 @@
     -webkit-transition-property: -webkit-transform, opacity;
     -moz-transition-property: -moz-transform, opacity;
     -ms-transition-property: -ms-transform, opacity;
+
     -o-transition-property: -o-transform, opacity;
     transition-property: transform, opacity;
     color: #000;

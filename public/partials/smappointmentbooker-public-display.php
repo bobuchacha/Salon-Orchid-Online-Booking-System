@@ -17,7 +17,8 @@ global $post;;
 
 ?>
 
-<div class="tabs-animated-wrap appointment-form" id="sm-appointment-container">
+<div class="tabs-animated-wrap appointment-form" id="sm-appointment-container" style="position:relative">
+
 	<div class="tabs">
 		<div class="tab" id="sm-tab-service">
 
@@ -46,10 +47,7 @@ global $post;;
 </div>
 
 <script type="text/javascript">
-	window.SMAPIServer = {
-		"url": "<?php echo $API_url; ?>",
-		"auth-token": "<?php echo $API_token; ?>"
-	};
+	window.SMAPIServer = {"url": "<?php echo $API_url; ?>", "auth-token": "<?php echo $API_token; ?>"};
 </script>
 
 <script type="text/template" id="template-select-service">
@@ -116,8 +114,8 @@ global $post;;
 
         <div class="row">
 			<div class="col-md-auto">
-                <p>Earliest Availability: <b><a href="#" class="first-availability"></a></b></p>
-                <button class="select-first-availability">Book me this time</button> or
+                <p><b>Earliest Availability:</b></p>
+                <button class="select-first-availability first-availability"></button> or
                 <p>&nbsp;</p>
                 <p><b>Select a time bellow:</b></p>
 				<div class="time-container"></div>
@@ -127,7 +125,6 @@ global $post;;
 		<button class="go-back time-item">Go back</button>
 	</div>
 </script>
-
 <script type="text/template" id="template-confirmation">
 	<div class="content-block-inner">
 		<h2>Thank you!</h2>
@@ -157,7 +154,6 @@ global $post;;
 
 	</div>
 </script>
-
 <script type="text/template" id="template-customer">
 	<div class="content-block-inner">
 		<h2>Almost Done!</h2>
@@ -203,11 +199,10 @@ global $post;;
 
 <script type="text/javascript">
 	(function( $ ) {
-
-
 		$(function(){
-			(new AppointmentBookForm("#sm-appointment-container")).render();
+			window.appointmentBooker = new AppointmentBookForm("#sm-appointment-container");
+			window.appointmentBooker.render();
+
 		});
 	})( jQuery );
-
 </script>

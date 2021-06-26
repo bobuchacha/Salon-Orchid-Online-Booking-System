@@ -17,8 +17,8 @@ Class SimpleRouter{
 	public function __construct() {
 		$this->gets = [];
 		$this->posts = [];
-		$this->path = isset($_SERVER["PATH_INFO"]) ? $_SERVER["PATH_INFO"] : "/";
-		$this->queryString = $_SERVER["QUERY_STRING"];
+		$this->path = $_SERVER["PATH_INFO"] ?? "/";
+		$this->queryString = $_SERVER["QUERY_STRING"] ?? "";
 		$this->method = $_SERVER["REQUEST_METHOD"];
 		$this->headers = getallheaders();
 
