@@ -25,7 +25,7 @@ $jsFolder =  plugin_dir_url(__DIR__ . '../') . 'public/js';
 				while ( have_posts() ) : the_post();
 					?>
 						<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-							<header class="entry-header">
+							<!--header class="entry-header">
 								<?php
 									global $post;
 //
@@ -56,7 +56,7 @@ $jsFolder =  plugin_dir_url(__DIR__ . '../') . 'public/js';
 										</p>
 									</div>
 								</div>
-							</header><!-- .entry-header -->
+							</header--><!-- .entry-header -->
 
 							<div class="entry-content">
 								<?php
