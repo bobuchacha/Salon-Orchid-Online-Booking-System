@@ -293,8 +293,9 @@ $Router->run();
 //================================================== HELPERS ===========================================================
 function request_api_data($uri, $method = 'GET', $queryString = []){
 	global $API, $API_URL, $API_Headers;
-	if ($method=='GET') {
+	if ($method == 'GET') {
 		$result = $API->get($API_URL . $uri, $queryString, $API_Headers);
+		var_dump($result);
 	}elseif ($method == 'POST') {
 		$result = $API->post($API_URL . $uri, $queryString, $API_Headers);
 	}else {
