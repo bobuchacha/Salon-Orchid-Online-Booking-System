@@ -16,6 +16,8 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 	header('Access-Control-Max-Age: 86400');    // cache for 1 day
 }
 
+define("API_DEBUG", true);
+
 // Access-Control headers are received during OPTIONS requests
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
@@ -59,7 +61,10 @@ $API_URL = 'http://api5.salonmanager.us';
 
 header("Author: Thang Cao");
 header("API-Version: 1.1");
-header("Response-Server: $API_URL");
+
+if (API_DEBUG) {
+    header("Response-Server: $API_URL");
+}
 
 /**
  *  fetch services from main API server and return to wordpress
@@ -296,6 +301,12 @@ function request_api_data($uri, $method = 'GET', $queryString = []){
 		return false;
 	}
 
+	if (API_DEBUG) {
+	    $query = json_encode($queryString);
+	    header("Requested: {$API_URL}/{$uri}");
+	    header("Requested-Method: {$method}");
+	    header("Requested-Query: {$query}");
+    }
 	try {
 		$r = json_decode($result->response);
 	}catch(Exception $e){
