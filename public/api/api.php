@@ -295,12 +295,20 @@ function request_api_data($uri, $method = 'GET', $queryString = []){
 	global $API, $API_URL, $API_Headers;
 	if ($method == 'GET') {
 		$result = $API->get($API_URL . $uri, $queryString, $API_Headers);
-		var_dump($result);
 	}elseif ($method == 'POST') {
 		$result = $API->post($API_URL . $uri, $queryString, $API_Headers);
 	}else {
 		return false;
 	}
+
+	if ($result->error) {
+	    global $Router;
+	    $Router->response([
+	        "error" => true,
+            "message" => $result->error,
+            "uri" => $result->url
+        ]);
+    }
 
 	if (API_DEBUG) {
 	    $query = json_encode($queryString);
