@@ -30,7 +30,7 @@ $jsFolder =  plugin_dir_url(__DIR__ . '../') . 'public/js';
 									global $post;
 //
 //									// print the title of the page
-									echo '<h1>' . __( 'BOOK APPOINTMENT', 'smappointmentbooker' ) . '</h1>';
+									echo '<h1>' . __( 'ONLINE BOOKING', 'smappointmentbooker' ) . '</h1>';
 									echo '<h1 class="page-title">' . get_the_title($post->post_parent) . '</h1>';
 
 								?>
@@ -39,9 +39,8 @@ $jsFolder =  plugin_dir_url(__DIR__ . '../') . 'public/js';
 										<i class="fas fa-globe-americas fa-2x"></i>
 									</div>
 
-									<div class="address" style="margin-left:4rem;">
+									<div class="address" style="">
 										<p>
-
 											<?php
 											global $post;
 
@@ -56,10 +55,9 @@ $jsFolder =  plugin_dir_url(__DIR__ . '../') . 'public/js';
 											?>
 										</p>
 									</div>
-
 								</div>
 							</header><!-- .entry-header -->
-
+                            <hr>
 							<div class="entry-content">
 								<?php
 								the_content();
