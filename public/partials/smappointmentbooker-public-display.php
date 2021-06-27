@@ -54,14 +54,14 @@ global $post;;
 	<div class="content-block-inner">
 
 		<%if (!isAddon){%>
-		<h2>Select Service</h2>
+		<h3>Select Service</h3>
 		<p>Let's get started by selecting a service for your next visit.</p>
 		<%}else{%>
-		<h2>Pick an Add-on Service</h2>
+		<h3>Pick an Add-on Service</h3>
 		<p>For better scheduling, please select an addon service if you need any. Additional service may require additional
 		appointment.</p>
 		<%}%>
-		<ul style="line-height:1.8em">
+		<ul style="line-height:1.8e;padding-left:1em;">
 			<%
 			_.each(Services, function(s){
 				if ((!isAddon && s.service_is_addon=='1') || (isAddon && s.service_is_addon=='0')) return;
@@ -83,11 +83,11 @@ global $post;;
 </script>
 <script type="text/template" id="template-technician-list">
 	<div class="content-block-inner">
-		<h2>Select a Technician</h2>
-		<p>Please select a Technician who will perform your service.</p>
+		<h3>Select a Technician</h3>
 		<ul style="line-height:1.8em;padding-left:0px">
-			<%
-			if (Technicians.length==0) print("No Technician available for this service");
+            <li data-id="-1" class="technician-item"><img src="http://api.salonmanager.us/avatar?f=generic_female.jpg" /> <span>Book me with anyone!</span></li>
+            <%
+			if (Technicians.length==0) print("We're sorry. There is no Technician available for this service at this time. Please try to call us at the salon for better assistance.");
 			_.each(Technicians, function(t){
 				%>
 				<li data-id="<%=t.id%>" class="technician-item"><img src="http://api.salonmanager.us/avatar?f=<%=t.profile_picture%>" /> <span><%=t.nickname%></span></li>
@@ -101,8 +101,7 @@ global $post;;
 </script>
 <script type="text/template" id="template-calendar">
 	<div class="content-block-inner">
-		<h2>Select Date & Time</h2>
-		<p>Select a date, then pick your arrival time.</p>
+		<h3>Select Date & Time</h3>
 		<div class="row">
 			<div class="col-md-auto">
 				<input data-toggle="datepicker" id="txtDate" type="text" style="display:none" />

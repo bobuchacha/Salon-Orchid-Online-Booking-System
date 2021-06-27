@@ -88,7 +88,7 @@ class Smappointmentbooker_Public {
 		 */
 		if (!is_admin()) {
 			// comment out the next two lines to load the local copy of jQuery
-		//	wp_deregister_script('jquery');
+			//	wp_deregister_script('jquery');
 			if ($this->has_shortcode("sm_appointment_booking_form")) {
                 wp_register_script('jquery3', '//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js', false, '1.11.3');
                 wp_enqueue_script('jquery3');
@@ -97,10 +97,7 @@ class Smappointmentbooker_Public {
                 wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/smappointmentbooker-public.css', array(), $this->version, 'all' );
                 wp_enqueue_script( 'datepicker', plugin_dir_url( __FILE__ ) . 'js/datepicker.js', array( 'jquery' ), "1.0.9", false );
                 wp_enqueue_style( 'datepicker', plugin_dir_url( __FILE__ ) . 'css/datepicker.css', array(), $this->version, 'all' );
-
-
             }
-
 		}
 
 

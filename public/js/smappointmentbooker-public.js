@@ -341,9 +341,12 @@
 
 		Me.showIndicator = () => {
 			if (Me.$container.find("._indicator").length) return;
-			Me.$container.append("<div class='_indicator'><div class='spinner'></div></div>");
+			Me._indicatorTimer = setTimeout(()=>{
+				Me.$container.append("<div class='_indicator'><div class='spinner'></div></div>");
+			}, 100);
 		}
 		Me.hideIndicator = () => {
+			clearTimeout(Me._indicatorTimer);
 			Me.$container.find("._indicator").remove();
 		}
 		// global event handler for UI
@@ -499,6 +502,13 @@
 			    name = $this.text(),
 			    isGoBack = $this.is('.go-back');
 
+			Me.showIndicator();
+
+			//
+			if (id == -1) {
+				//return Me.showIndicator();
+			}
+
 			// if it is a go back, show previous form. (In this context it is form 1)
 			if (isGoBack){
 				showTab('#sm-tab-service');
@@ -509,7 +519,7 @@
 			_setAppointmentInformation('technician-name', name);
 
 			// now request information about technician first available
-			Me.showIndicator();
+
 			_requestServerData({
 				URI: '/st-get-technician-first-available',
 				method: 'GET',
@@ -520,14 +530,14 @@
 				onSuccess: function (response) {
 					let avails = response.data;
 					let date = response.date;
-					Me.hideIndicator();
+
 					_requestCalendar();
+					Me.hideIndicator();
 
 					if (avails.length) {
 						_firstAvaiDate = date;
 						_firstAvaiTime = avails[0];
 						$(".first-availability").html(avails[0] + " on " + _format_date(date));
-
 					}
 				},
 				onError: () => {
